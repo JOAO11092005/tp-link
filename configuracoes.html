@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração da rede Wifi</title>
+    <link rel="stylesheet" href="configuracoes.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Electrolize&family=Noto+Sans:wght@200&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <div class="logo">
+            <a href="./configuracoes.html">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/TPLINK_Logo_2.svg/2560px-TPLINK_Logo_2.svg.png" alt="">
+            </a>
+        </div>
+        <h2 id="ipInfo">Meu IP: Obtendo...</h2>
+        <br>
+        <h2 id="locationInfo">País: Obtendo...</h2>
+        <h2 id="cityInfo">Cidade: Obtendo...</h2>
+        <h2 id="countryCode">Código do País: Obtendo...</h2>
+        <h2 id="nomeprovedor">Nome do provedor: Obtendo...</h2>
+
+        <!-- Adicione a estrutura HTML para a previsão do tempo -->
+        <div id="weatherInfo">
+            <h2 id="cidade">Cidade: </h2>
+            <h2 id="temperatura">Temperatura: </h2>
+            <h2 id="condicao">Condição: </h2>
+            <h2 id="humidade">Umidade: </h2>
+            <h2 id="velocidade-do-vento">Velocidade do Vento: </h2>
+
+            <img id="icone-condicao" alt="Condição do Tempo">
+        </div>
+    </main>
+
+    <script>
+        // Coloque aqui a sua chave de API
+        const chaveDaApi = "cd31863ae267407cb01212131232011";
+
+        async function getIPAddress() {
+            const response = await fetch('https://api64.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        }
+
+        async function getLocationInfo(ipAddress) {
+            const response = await fetch(`https://ipapi.co/${ipAddress}/json/`);
+            const data = await response.json();
+            return {
+                country: data.country_name,
+                countryCode: data.country,
+                city: data.city,
+                provider: data.org,
+            };
+        }
+
+        async function getIPInfo() {
+            try {
+                const ipAddress = await getIPAddress();
+                const locationInfo = await getLocationInfo(ipAddress);
+
+                document.getElementById('ipInfo').innerHTML = `Meu IP: ${ipAddress}`;
+                document.getElementById('locationInfo').innerHTML = `País: ${locationInfo.country}`;
+                document.getElementById('countryCode').innerHTML = `Código do País: ${locationInfo.countryCode}`;
+                document.getElementById('cityInfo').innerHTML = `Cidade: ${locationInfo.city}`;
+                
+                // Atualizado: Verifica se o nome do provedor está disponível
+                const nomeProvedor = locationInfo.provider || 'Nome do provedor indisponível';
+                document.getElementById('nomeprovedor').innerHTML = `Nome do provedor: ${nomeProvedor}`;
+
+                // Atualizado: Chama a função para buscar dados da cidade
+                await buscarDadosDaCidade(locationInfo.city);
+
+                // Restante do seu código...
+            } catch (error) {
+                console.error('Erro ao obter informações do IP:', error);
+                const ipInfoElement = document.getElementById('ipInfo');
+                ipInfoElement.innerHTML = '<p>Não foi possível obter informações do IP.</p>';
+            }
+        }
+
+        async function buscarDadosDaCidade(cidade) {
+            const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${chaveDaApi}&q=${cidade}&aqi=no&lang=pt`;
+
+            try {
+                const resposta = await fetch(apiUrl);
+                const dados = await resposta.json();
+
+                // Atualiza a previsão do tempo na tela
+                preencherDadosNaTela(dados, cidade);
+            } catch (error) {
+                console.error('Erro ao obter dados da cidade:', error);
+            }
+        }
+
+        function preencherDadosNaTela(dados, cidade) {
+            const temperatura = dados.current.temp_c;
+            const condicao = dados.current.condition.text;
+            const humidade = dados.current.humidity;
+            const velocidadeDoVento = dados.current.wind_kph;
+            const iconeCondicao = dados.current.condition.icon;
+
+            document.getElementById("cidade").textContent = `Cidade: ${cidade}`;
+            document.getElementById("temperatura").textContent = `Temperatura: ${temperatura} ºC`;
+            document.getElementById("condicao").textContent = `Condição: ${condicao}`;
+            document.getElementById("humidade").textContent = `Umidade: ${humidade}%`;
+            document.getElementById("velocidade-do-vento").textContent = `Velocidade do Vento: ${velocidadeDoVento} km/h`;
+            document.getElementById("icone-condicao").setAttribute("src", `https:${iconeCondicao}`);
+        }
+
+        window.onload = async function () {
+            await getIPInfo();
+        };
+    </script>
+</body>
+
+</html>

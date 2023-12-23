@@ -1,0 +1,51 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans', sans-serif;
+
+}
+body{
+    background: url(https://i.pinimg.com/564x/31/68/4b/31684b09d686113b1592aeea35320f77.jpg) center center no-repeat;
+    background-size: cover;
+    height: 600px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.logo{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.logo img{
+    width: 100px;
+}
+main{
+    padding: 20px;
+    background-color: #62a5628c;
+    border-radius: 10px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+label{
+    font-size: 20px;
+}
+input{
+    padding: 10px;
+    border-radius: 10px;
+}
+button{
+    padding: 10px;
+    width: 200px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+}
+#weatherInfo img{
+    margin-left: 50%;
+    transform: translateX(-50%);
+}

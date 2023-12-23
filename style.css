@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Electrolize', sans-serif;
+  
+  }
+  body{
+    background: url(https://i.pinimg.com/564x/31/68/4b/31684b09d686113b1592aeea35320f77.jpg) center center no-repeat;
+    background-size: cover;
+    height: 600px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .caixa{
+   
+  }
+  label{
+    font-size: 18px;
+  }
+  input{
+    padding:3px;
+    font-size: 13px;
+    border-radius: 7px;
+  }
+  .imagem{
+    margin: 20px;
+  }
+  .imagem img{
+    width: 200px;
+  }
+  main{
+     background-color: rgba(112, 112, 192, 0.589);
+     padding: 30px;
+      width: 300px;
+     border-radius: 20px;
+  }
+  
+  #usuario{
+    margin-bottom: 20px;
+  }
+  #senha{
+    margin-left: 12px;
+  }
+  button{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+    padding: 5px;
+    width: 100px;
+    border-radius: 10px;
+  }
