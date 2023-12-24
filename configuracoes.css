@@ -49,3 +49,6 @@ button{
     margin-left: 50%;
     transform: translateX(-50%);
 }
+#cidade{
+    display: none;
+}
